@@ -1,5 +1,5 @@
 {
-	"name": "@md/styling",
+	"name": "md-styling",
 	"author": "AzamatRaimbekov MD Team",
 	"private": false,
 	"version": "0.0.1",
@@ -20,7 +20,8 @@
 		"dev": "vite",
 		"build": "tsc --p ./tsconfig-build.json && vite build",
 		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-		"preview": "vite preview"
+		"preview": "vite preview",
+		"postinstall": "node scripts/setup.js"
 	},
 	"peerDependencies": {
 		"react": "^18.2.0",

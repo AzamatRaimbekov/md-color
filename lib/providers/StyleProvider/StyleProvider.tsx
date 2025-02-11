@@ -15,7 +15,7 @@ interface ColorModel {
 
 const loadPalette = async (brand: string) => {
 	try {
-		const colors = (await import(`./brand.json`))
+		const colors = (await import(`../../brand.json`))
 			.default as unknown as ColorModel
 
 		return colors
