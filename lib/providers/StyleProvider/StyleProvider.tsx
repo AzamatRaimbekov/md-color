@@ -15,7 +15,7 @@ interface StyleProviderProps {
 // 	}
 // }
 
-const loadPalette = async (brand: string) => {
+const loadPalette = (brand: string) => {
 	try {
 		const _colors = Palette
 		return _colors
@@ -23,7 +23,7 @@ const loadPalette = async (brand: string) => {
 		console.error(`Failed to load design tokens for key: ${brand}`, error)
 	}
 }
-const brandPalette = await loadPalette('mkassa')
+const brandPalette = loadPalette('mkassa')
 
 export const brandColors = createStyleTokens(brandPalette)
 
