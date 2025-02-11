@@ -1,0 +1,12 @@
+{
+	"black": {
+		"5": "red",
+		"10": "blue",
+		"20": "gray"
+	},
+	"blue": {
+		"5": "yellow",
+		"10": "black",
+		"20": "green"
+	}
+}
