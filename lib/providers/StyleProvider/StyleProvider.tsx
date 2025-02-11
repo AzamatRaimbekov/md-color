@@ -1,24 +1,24 @@
 import { createStyleTokens } from '../../utils/createStyleTokens'
 
+import Palette from '../../brand.json'
+
 interface StyleProviderProps {
 	children: React.ReactNode
 }
 
-interface ColorModel {
-	[key: string]: {
-		[key: string]: {
-			$type: 'color'
-			$value: string
-		}
-	}
-}
+// interface ColorModel {
+// 	[key: string]: {
+// 		[key: string]: {
+// 			$type: 'color'
+// 			$value: string
+// 		}
+// 	}
+// }
 
 const loadPalette = async (brand: string) => {
 	try {
-		const colors = (await import(`../../brand.json`))
-			.default as unknown as ColorModel
-
-		return colors
+		const _colors = Palette
+		return _colors
 	} catch (error) {
 		console.error(`Failed to load design tokens for key: ${brand}`, error)
 	}
