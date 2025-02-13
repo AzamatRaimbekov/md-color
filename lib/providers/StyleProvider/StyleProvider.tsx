@@ -14,6 +14,8 @@ interface StyleProviderProps {
 }
 
 // Загружаем JSON-файлы через import.meta.glob
+
+// @ts-ignore
 const brands = import.meta.glob('../../brands/*.json', { eager: true })
 
 const loadPaletteSync = (brand: BrandTypes = 'default') => {
