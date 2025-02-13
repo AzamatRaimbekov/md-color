@@ -2,7 +2,7 @@ import { BrandTypes } from '../../brands/brand'
 import { getDefault } from '../../brands/default'
 import { getMKassa } from '../../brands/mkassa'
 import { createStyleTokens, StyleTokens } from '../../utils/createStyleTokens'
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useState } from 'react'
 
 type Theme = 'light' | 'dark'
 interface ContextState {
