@@ -1,4 +1,6 @@
 import { BrandTypes } from '../../brands/brand'
+import { getDefault } from '../../brands/default'
+import { getMKassa } from '../../brands/mkassa'
 import { createStyleTokens, StyleTokens } from '../../utils/createStyleTokens'
 import { createContext, useContext, useEffect, useState } from 'react'
 
@@ -13,13 +15,19 @@ interface StyleProviderProps {
 	brand?: BrandTypes
 }
 
+const data: Record<BrandTypes, () => {}> = {
+	default: getDefault,
+	mkassa: getMKassa,
+}
+
 // 🔥 Динамический импорт (Загружается только нужный JSON)
-const loadPalette = async (brand: BrandTypes = 'default') => {
+const loadPalette = (brand: BrandTypes = 'default') => {
 	try {
-		const brandData = await import(`../../brands/jsons/${brand}.json`)
-		return brandData.default
+		if (data[brand]()) {
+			return data[brand]()
+		}
 	} catch (error) {
-		console.error(`Brand "${brand}" not found`, error)
+		console.error(`Brand "${brand}" notfound`, error)
 		return {}
 	}
 }
@@ -34,18 +42,14 @@ export const useMDStyling = () => {
 	return context
 }
 
-export function StyleProvider({
+export function StyleProviderVariant({
 	children,
 	brand = 'default',
 }: StyleProviderProps) {
 	const [theme] = useState<Theme>('light')
-	const [brandTokens, setBrandTokens] = useState<StyleTokens | null>(null)
 
-	useEffect(() => {
-		loadPalette(brand).then(palette => {
-			setBrandTokens(createStyleTokens(palette))
-		})
-	}, [brand])
+	const palettes = loadPalette(brand)
+	const brandTokens = createStyleTokens(palettes)
 
 	// Пока палитра загружается → пустой объект
 	return (

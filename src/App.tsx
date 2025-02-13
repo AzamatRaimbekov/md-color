@@ -1,8 +1,8 @@
-import { StyleProvider } from '../lib/main'
+import { StyleProviderVariant } from '../lib/providers/StyleProviderVariant'
 
 function App() {
 	return (
-		<StyleProvider brand='mkassa'>
+		<StyleProviderVariant brand='mkassa'>
 			<div
 				style={{
 					background: 'var(--primary)',
@@ -12,7 +12,7 @@ function App() {
 			>
 				BLOCK
 			</div>
-		</StyleProvider>
+		</StyleProviderVariant>
 	)
 }
 
