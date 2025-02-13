@@ -2,7 +2,7 @@ import { StyleProvider } from '../lib/main'
 
 function App() {
 	return (
-		<StyleProvider>
+		<StyleProvider brand='mkassa'>
 			<div
 				style={{
 					background: 'var(--primary)',
