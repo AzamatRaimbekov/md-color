@@ -1,6 +1,6 @@
 import { BrandTypes } from '../../brands/brand'
 import { createStyleTokens, StyleTokens } from '../../utils/createStyleTokens'
-import { createContext, useContext, useMemo, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 
 type Theme = 'light' | 'dark'
 interface ContextState {
@@ -13,23 +13,15 @@ interface StyleProviderProps {
 	brand?: BrandTypes
 }
 
-// Загружаем JSON-файлы через import.meta.glob
-
-// @ts-ignore
-const brands = import.meta.glob('../../brands/*.json', { eager: true })
-
-const loadPaletteSync = (brand: BrandTypes = 'default') => {
-	const brandPath = `../../brands/${brand}.json`
-	const brandData = brands[brandPath] as
-		| { default: Record<string, any> }
-		| undefined
-
-	if (!brandData) {
-		console.error(`Failed to load design tokens for brand: ${brand}`)
+// 🔥 Динамический импорт (Загружается только нужный JSON)
+const loadPalette = async (brand: BrandTypes = 'default') => {
+	try {
+		const brandData = await import(`../../brands/${brand}.json`)
+		return brandData.default
+	} catch (error) {
+		console.error(`Brand "${brand}" not found`, error)
 		return {}
 	}
-
-	return brandData.default
 }
 
 export const StyleContext = createContext<ContextState | null>(null)
@@ -46,16 +38,21 @@ export function StyleProvider({
 	children,
 	brand = 'default',
 }: StyleProviderProps) {
-	const brandTokens = useMemo(() => {
-		const brandPalette = loadPaletteSync(brand) // Загружаем палитру синхронно
-		return createStyleTokens(brandPalette) // Преобразуем в токены
+	const [theme] = useState<Theme>('light')
+	const [brandTokens, setBrandTokens] = useState<StyleTokens | null>(null)
+
+	useEffect(() => {
+		loadPalette(brand).then(palette => {
+			setBrandTokens(createStyleTokens(palette))
+		})
 	}, [brand])
 
-	const [theme] = useState<Theme>('light')
-
+	// Пока палитра загружается → пустой объект
 	return (
-		<StyleContext.Provider value={{ theme, styling: brandTokens }}>
-			<div style={brandTokens}>{children}</div>
+		// @ts-ignore
+		<StyleContext.Provider value={{ theme, styling: brandTokens || {} }}>
+			{/*  @ts-ignore */}
+			<div style={brandTokens || {}}>{children}</div>
 		</StyleContext.Provider>
 	)
 }
