@@ -1,6 +1,6 @@
 import { BrandTypes } from '../../brands/brand'
 import { createStyleTokens, StyleTokens } from '../../utils/createStyleTokens'
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useLayoutEffect, useState } from 'react'
 
 type Theme = 'light' | 'dark'
 interface ContextState {
@@ -41,7 +41,7 @@ export function StyleProvider({
 	const [theme] = useState<Theme>('light')
 	const [brandTokens, setBrandTokens] = useState<StyleTokens | null>(null)
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		loadPalette(brand).then(palette => {
 			setBrandTokens(createStyleTokens(palette))
 		})
